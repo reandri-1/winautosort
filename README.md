@@ -16,30 +16,30 @@
 
 </div>
 
-## 📑 Daftar Isi / Table of Contents
-- [✨ Fitur Utama (Features)](#-fitur-utama-features)
-- [🛡️ Keamanan & Anti Data-Loss](#️-keamanan--anti-data-loss)
-- [📁 Kategori File Bawaan (Default Categories)](#-kategori-file-bawaan-default-categories)
-- [🚀 Panduan Memulai Cepat (Quick Start)](#-panduan-memulai-cepat-quick-start)
-- [⚙️ Pengaturan & Konfigurasi (config.json)](#️-pengaturan--konfigurasi-configjson)
-- [🔄 Auto-Start saat Windows Boot (Startup)](#-auto-start-saat-windows-boot-startup)
-- [🧪 Menjalankan Pengujian (Tests)](#-menjalankan-pengujian-tests)
-- [📊 Performa & Resource](#-performa--resource)
+## Daftar Isi / Table of Contents
+- [ Fitur Utama (Features)](#-fitur-utama-features)
+- [ Keamanan & Anti Data-Loss](#️-keamanan--anti-data-loss)
+- [ Kategori File Bawaan (Default Categories)](#-kategori-file-bawaan-default-categories)
+- [ Panduan Memulai Cepat (Quick Start)](#-panduan-memulai-cepat-quick-start)
+- [ Pengaturan & Konfigurasi (config.json)](#️-pengaturan--konfigurasi-configjson)
+- [ Auto-Start saat Windows Boot (Startup)](#-auto-start-saat-windows-boot-startup)
+- [ Menjalankan Pengujian (Tests)](#-menjalankan-pengujian-tests)
+- [ Performa & Resource](#-performa--resource)
 
 ---
 
-## ✨ Fitur Utama (Features)
+## Fitur Utama (Features)
 
-- **⚡ Real-time Event-Driven:** Memanfaatkan API Windows filesystem listener (`ReadDirectoryChangesW` via `fsnotify`), bukan polling loop berulang yang memboroskan baterai & CPU.
-- **🔒 Smart Lock Detection:** Mendeteksi file yang masih dalam proses unduh browser (mengabaikan ekstensi sementara seperti `.crdownload`, `.part`, `.tmp`) dan menunggu lock file dilepas sebelum dipindahkan.
-- **🔇 Silent Background Daemon:** Dikompilasi dengan `-ldflags "-H=windowsgui"` sehingga berjalan senyap di background tanpa ada jendela Command Prompt atau terminal yang mengganggu.
-- **🛑 Single-Instance Guard:** Menggunakan Windows Named Kernel Mutex (`Local\WinAutoSort-...`) agar aplikasi tidak bisa berjalan dobel saat autostart dan manual klik bersamaan.
-- **🛡️ Anti-Overwrite & Non-Destructive:** Jika nama file tujuan sudah ada, otomatis menambahkan penomoran `file (1).ext`. File lama tidak akan pernah tertimpa.
-- **🧹 Setup Wizard Otomatis:** Saat pertama kali dijalankan, muncul dialog pertanyaan apakah ingin menyapu file lama yang sudah ada (*sweep on start*).
+- **Real-time Event-Driven:** Memanfaatkan API Windows filesystem listener (`ReadDirectoryChangesW` via `fsnotify`), bukan polling loop berulang yang memboroskan baterai & CPU.
+- **Smart Lock Detection:** Mendeteksi file yang masih dalam proses unduh browser (mengabaikan ekstensi sementara seperti `.crdownload`, `.part`, `.tmp`) dan menunggu lock file dilepas sebelum dipindahkan.
+- **Silent Background Daemon:** Dikompilasi dengan `-ldflags "-H=windowsgui"` sehingga berjalan senyap di background tanpa ada jendela Command Prompt atau terminal yang mengganggu.
+- **Single-Instance Guard:** Menggunakan Windows Named Kernel Mutex (`Local\WinAutoSort-...`) agar aplikasi tidak bisa berjalan dobel saat autostart dan manual klik bersamaan.
+- **Anti-Overwrite & Non-Destructive:** Jika nama file tujuan sudah ada, otomatis menambahkan penomoran `file (1).ext`. File lama tidak akan pernah tertimpa.
+- **Setup Wizard Otomatis:** Saat pertama kali dijalankan, muncul dialog pertanyaan apakah ingin menyapu file lama yang sudah ada (*sweep on start*).
 
 ---
 
-## 🛡️ Keamanan & Anti Data-Loss
+## Keamanan & Anti Data-Loss
 
 WinAutoSort dirancang dengan prinsip **ketahanan data maksimal**:
 
@@ -70,29 +70,29 @@ flowchart TD
 
 ---
 
-## 📁 Kategori File Bawaan (Default Categories)
+## Kategori File Bawaan (Default Categories)
 
 Semua file dikelompokkan secara cerdas ke dalam sub-folder berikut:
 
 | Nama Sub-folder | Jenis File & Ekstensi |
 |---|---|
-| `📂 image_download` | `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`, `.bmp`, `.tiff`, `.ico`, `.heic`, `.svg`, `.raw`, `.cr2`, `.nef`, `.dng` |
-| `📂 video_download` | `.mp4`, `.mkv`, `.webm`, `.avi`, `.mov`, `.wmv`, `.flv`, `.3gp`, subtitle (`.srt`, `.vtt`, `.ass`) |
-| `📂 audio_download` | `.mp3`, `.wav`, `.flac`, `.aac`, `.m4a`, `.ogg`, `.opus`, `.wma`, `.aiff`, `.mid` |
-| `📂 document_download` | `.pdf`, `.doc`, `.docx`, `.odt`, `.rtf`, `.txt`, `.md`, `.xls`, `.xlsx`, `.csv`, `.ppt`, `.pptx` |
-| `📂 ebook_download` | `.epub`, `.mobi`, `.azw`, `.azw3`, `.fb2`, `.djvu`, `.cbz`, `.cbr` |
-| `📂 archive_download` | `.zip`, `.rar`, `.7z`, `.tar`, `.gz`, `.tgz`, `.bz2`, `.xz`, `.zst`, `.cab` |
-| `📂 installer_download` | `.exe`, `.msi`, `.msix`, `.apk`, `.deb`, `.rpm`, `.dmg`, `.pkg`, `.appimage`, `.jar` |
-| `📂 disk_image_download` | `.iso`, `.img`, `.vhd`, `.vhdx`, `.vmdk`, `.vdi`, `.wim` |
-| `📂 font_download` | `.ttf`, `.otf`, `.woff`, `.woff2`, `.ttc` |
-| `📂 design_download` | `.psd`, `.ai`, `.eps`, `.indd`, `.fig`, `.xd`, `.blend`, `.fbx`, `.obj`, `.stl`, `.dwg`, `.dxf` |
-| `📂 code_download` | `.py`, `.js`, `.ts`, `.java`, `.cpp`, `.cs`, `.go`, `.rs`, `.html`, `.css`, `.json`, `.sql`, `.sh`, `.bat`, `.ps1` |
-| `📂 data_download` | `.db`, `.sqlite`, `.sqlite3`, `.mdb`, `.accdb`, `.parquet`, `.bak` |
-| `📂 file_download` | *Fallback otomatis* untuk file lainnya (misal file tanpa ekstensi, `.torrent`, `.lnk`) |
+| ` image_download` | `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`, `.bmp`, `.tiff`, `.ico`, `.heic`, `.svg`, `.raw`, `.cr2`, `.nef`, `.dng` |
+| ` video_download` | `.mp4`, `.mkv`, `.webm`, `.avi`, `.mov`, `.wmv`, `.flv`, `.3gp`, subtitle (`.srt`, `.vtt`, `.ass`) |
+| ` audio_download` | `.mp3`, `.wav`, `.flac`, `.aac`, `.m4a`, `.ogg`, `.opus`, `.wma`, `.aiff`, `.mid` |
+| ` document_download` | `.pdf`, `.doc`, `.docx`, `.odt`, `.rtf`, `.txt`, `.md`, `.xls`, `.xlsx`, `.csv`, `.ppt`, `.pptx` |
+| ` ebook_download` | `.epub`, `.mobi`, `.azw`, `.azw3`, `.fb2`, `.djvu`, `.cbz`, `.cbr` |
+| ` archive_download` | `.zip`, `.rar`, `.7z`, `.tar`, `.gz`, `.tgz`, `.bz2`, `.xz`, `.zst`, `.cab` |
+| ` installer_download` | `.exe`, `.msi`, `.msix`, `.apk`, `.deb`, `.rpm`, `.dmg`, `.pkg`, `.appimage`, `.jar` |
+| ` disk_image_download` | `.iso`, `.img`, `.vhd`, `.vhdx`, `.vmdk`, `.vdi`, `.wim` |
+| ` font_download` | `.ttf`, `.otf`, `.woff`, `.woff2`, `.ttc` |
+| ` design_download` | `.psd`, `.ai`, `.eps`, `.indd`, `.fig`, `.xd`, `.blend`, `.fbx`, `.obj`, `.stl`, `.dwg`, `.dxf` |
+| ` code_download` | `.py`, `.js`, `.ts`, `.java`, `.cpp`, `.cs`, `.go`, `.rs`, `.html`, `.css`, `.json`, `.sql`, `.sh`, `.bat`, `.ps1` |
+| ` data_download` | `.db`, `.sqlite`, `.sqlite3`, `.mdb`, `.accdb`, `.parquet`, `.bak` |
+| ` file_download` | *Fallback otomatis* untuk file lainnya (misal file tanpa ekstensi, `.torrent`, `.lnk`) |
 
 ---
 
-## 🚀 Panduan Memulai Cepat (Quick Start)
+## Panduan Memulai Cepat (Quick Start)
 
 ### 1. Prasyarat
 - OS: Windows 10 atau Windows 11
@@ -120,7 +120,7 @@ Cukup klik ganda pada `WinAutoSort.exe`. Pada pertama kali dijalankan, aplikasi 
 
 ---
 
-## ⚙️ Pengaturan & Konfigurasi (config.json)
+## Pengaturan & Konfigurasi (config.json)
 
 File `config.json` berada di samping file `WinAutoSort.exe`:
 
@@ -157,7 +157,7 @@ File `config.json` berada di samping file `WinAutoSort.exe`:
 
 ---
 
-## 🔄 Auto-Start saat Windows Boot (Startup)
+## Auto-Start saat Windows Boot (Startup)
 
 Agar WinAutoSort otomatis berjalan di latar belakang setiap kali Anda login ke Windows:
 
@@ -171,7 +171,7 @@ Agar WinAutoSort otomatis berjalan di latar belakang setiap kali Anda login ke W
 
 ---
 
-## 🧪 Menjalankan Pengujian (Tests)
+## Menjalankan Pengujian (Tests)
 
 Proyek ini dilengkapi dengan unit test dan integration test komprehensif (32 skenario pengujian):
 
@@ -190,7 +190,7 @@ Pengujian mencakup:
 
 ---
 
-## 📊 Performa & Resource
+## Performa & Resource
 
 | Metrik | Hasil Pengujian |
 |---|---|
@@ -201,7 +201,7 @@ Pengujian mencakup:
 
 ---
 
-## 📄 Lisensi (License)
+## Lisensi (License)
 
 Proyek ini dilisensikan di bawah lisensi [MIT License](LICENSE).
 Bebas digunakan, dimodifikasi, dan didistribusikan.
