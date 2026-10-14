@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ WinAutoSort
+# WinAutoSort
 
 **A blazing-fast, lightweight, and resilient background file router for Windows.**
 
@@ -92,7 +92,7 @@ Semua file dikelompokkan secara cerdas ke dalam sub-folder berikut:
 
 ---
 
-## 🚀 Panduan Memulai Cepat (Quick Start)
+## Panduan Memulai Cepat (Quick Start)
 
 ### Cara 1: Menggunakan Installer `.exe` (Rekomendasi untuk Pengguna Umum)
 Tidak perlu menginstall Go atau membuka terminal:
@@ -156,7 +156,7 @@ File `config.json` berada di samping file `WinAutoSort.exe`:
 * `"lock_timeout_seconds"`: Batas maksimum menunggu file yang sedang ditulis (default: 7200 detik / 2 jam).
 * `"max_workers"`: Jumlah thread worker pemrosesan file paralel (default: 4, maksimal: 64).
 
-> 💡 **Tips:** Untuk memunculkan kembali dialog pengaturan awal kapan saja, jalankan:
+>  **Tips:** Untuk memunculkan kembali dialog pengaturan awal kapan saja, jalankan:
 > ```powershell
 > .\WinAutoSort.exe --setup
 > ```
@@ -186,13 +186,13 @@ go test -v ./...
 ```
 
 Pengujian mencakup:
-- ✅ *Rule parsing & Windows environment variable expansion*
-- ✅ *Smart file lock & release detection*
-- ✅ *Collision resolution (`file (1).ext`)*
-- ✅ *Simulation of browser `.crdownload` renaming lifecycle*
-- ✅ *Single-instance named mutex collision guard*
-- ✅ *Large batch processing (400 files concurrency test)*
-- ✅ *Worker panic recovery resilience*
+-  *Rule parsing & Windows environment variable expansion*
+-  *Smart file lock & release detection*
+-  *Collision resolution (`file (1).ext`)*
+-  *Simulation of browser `.crdownload` renaming lifecycle*
+-  *Single-instance named mutex collision guard*
+-  *Large batch processing (400 files concurrency test)*
+-  *Worker panic recovery resilience*
 
 ---
 
