@@ -1,0 +1,22 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Runtime logs
+autosort.log
+autosort.log.old
+*.log
+
+# Test artifacts
+scratch/
+test_output/
+
+# IDE / OS specific
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
