@@ -10,7 +10,8 @@ autosort.log
 autosort.log.old
 *.log
 
-# Test artifacts
+# Build and test artifacts
+dist/
 scratch/
 test_output/
 

@@ -92,31 +92,37 @@ Semua file dikelompokkan secara cerdas ke dalam sub-folder berikut:
 
 ---
 
-## Panduan Memulai Cepat (Quick Start)
+## 🚀 Panduan Memulai Cepat (Quick Start)
 
-### 1. Prasyarat
+### Cara 1: Menggunakan Installer `.exe` (Rekomendasi untuk Pengguna Umum)
+Tidak perlu menginstall Go atau membuka terminal:
+1. Buka halaman **[Releases](https://github.com/reandri-1/winautosort/releases)**.
+2. Unduh berkas **`WinAutoSort-Setup-v1.0.0.exe`**.
+3. Klik ganda untuk menginstall (tersedia opsi otomatis jalan saat Windows boot / Startup).
+4. Selesai! WinAutoSort langsung aktif menjaga folder Downloads Anda.
+
+---
+
+### Cara 2: Build Manual dari Source Code (Untuk Pengembang / Developer)
+
+#### Prasyarat:
 - OS: Windows 10 atau Windows 11
 - Go 1.23 atau lebih baru
 
-### 2. Kompilasi Executable
-
 ```powershell
-# Clone repositori
-git clone https://github.com/USERNAME/winautosort.git
+# 1. Clone repositori
+git clone https://github.com/reandri-1/winautosort.git
 cd winautosort
 
-# Unduh dependensi
+# 2. Unduh dependensi
 go mod tidy
 
-# Build untuk mode Background (Senyap tanpa terminal)
+# 3. Build untuk mode Background (Senyap tanpa terminal)
 go build -ldflags "-H=windowsgui -s -w" -o WinAutoSort.exe .
 
-# ATAU build untuk mode Debug (dengan output konsol untuk pengujian)
-go build -o WinAutoSort-debug.exe .
+# 4. (Opsional) Buat Installer Setup .exe menggunakan Inno Setup
+iscc installer.iss
 ```
-
-### 3. Menjalankan Aplikasi
-Cukup klik ganda pada `WinAutoSort.exe`. Pada pertama kali dijalankan, aplikasi akan menampilkan dialog setup awal.
 
 ---
 
