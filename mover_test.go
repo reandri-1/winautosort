@@ -83,3 +83,35 @@ func TestCopyThenRemove(t *testing.T) {
 		t.Fatal("source should be removed")
 	}
 }
+
+func TestMoveToDir_ReplacesZeroBytePlaceholder(t *testing.T) {
+	root := t.TempDir()
+	destDir := filepath.Join(root, "audio_download")
+	_ = os.MkdirAll(destDir, 0o755)
+
+	// Simulate a 0-byte dummy file already in destination
+	dummy := filepath.Join(destDir, "song.mp3")
+	write(t, dummy, "") // 0 bytes
+
+	// Incoming real file with content
+	src := filepath.Join(root, "song.mp3")
+	write(t, src, "real audio data content")
+
+	dest, err := MoveToDir(src, destDir)
+	if err != nil {
+		t.Fatalf("MoveToDir failed: %v", err)
+	}
+
+	// Must take the clean name "song.mp3", NOT "song (1).mp3"
+	if dest != dummy {
+		t.Fatalf("expected dest %q, got %q", dummy, dest)
+	}
+
+	content, err := os.ReadFile(dest)
+	if err != nil {
+		t.Fatalf("read dest: %v", err)
+	}
+	if string(content) != "real audio data content" {
+		t.Fatalf("unexpected content: %q", string(content))
+	}
+}

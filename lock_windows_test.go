@@ -68,3 +68,63 @@ func TestWaitForFileUnlock_ReadOnlyFileIsNotLocked(t *testing.T) {
 		t.Fatalf("read-only file should count as free, got %v", err)
 	}
 }
+
+func TestHasDownloadCompanion(t *testing.T) {
+	dir := t.TempDir()
+	target := filepath.Join(dir, "music.mp3")
+	write(t, target, "") // 0-byte placeholder
+
+	if hasDownloadCompanion(target) {
+		t.Fatal("should not have companion initially")
+	}
+
+	// 1. Simulate Firefox active download (.part)
+	part := filepath.Join(dir, "music.mp3.part")
+	write(t, part, "streaming bytes")
+	if !hasDownloadCompanion(target) {
+		t.Fatal("expected companion detected for music.mp3.part")
+	}
+
+	// 2. Remove .part, simulate Chrome (.crdownload)
+	_ = os.Remove(part)
+	cr := filepath.Join(dir, "music.mp3.crdownload")
+	write(t, cr, "streaming bytes")
+	if !hasDownloadCompanion(target) {
+		t.Fatal("expected companion detected for music.mp3.crdownload")
+	}
+
+	// 3. Remove .crdownload
+	_ = os.Remove(cr)
+	if hasDownloadCompanion(target) {
+		t.Fatal("companion should be gone")
+	}
+}
+
+func TestCheckFileReady_ZeroByteWithCompanionNotReady(t *testing.T) {
+	dir := t.TempDir()
+	target := filepath.Join(dir, "clip.mp4")
+	write(t, target, "") // 0 bytes
+
+	part := filepath.Join(dir, "clip.mp4.part")
+	write(t, part, "data")
+
+	ready, err := CheckFileReady(target)
+	if err != nil {
+		t.Fatalf("CheckFileReady err: %v", err)
+	}
+	if ready {
+		t.Fatal("target should not be ready while .part exists")
+	}
+
+	// Once .part is removed, simulate completed download
+	_ = os.Remove(part)
+	write(t, target, "completed 10mb video")
+
+	ready, err = CheckFileReady(target)
+	if err != nil {
+		t.Fatalf("CheckFileReady after complete err: %v", err)
+	}
+	if !ready {
+		t.Fatal("target should be ready after download finishes")
+	}
+}

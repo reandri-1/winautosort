@@ -38,10 +38,21 @@ func ResolveUniquePath(destDir, fileName string) string {
 // MoveToDir moves src into destDir (created if missing) without ever overwriting an
 // existing file, and returns the final destination path. If another process grabs the
 // chosen name between the check and the move, a fresh unique name is picked.
+// If the destination already contains an empty 0-byte placeholder of the exact same name
+// and src contains real content (>0 bytes), the 0-byte dummy is cleanly removed so the
+// incoming file can claim its original unnumbered name.
 func MoveToDir(src, destDir string) (string, error) {
 	if err := os.MkdirAll(destDir, 0o755); err != nil {
 		return "", fmt.Errorf("create %s: %w", destDir, err)
 	}
+
+	target := filepath.Join(destDir, filepath.Base(src))
+	if candInfo, err := os.Stat(target); err == nil && candInfo.Size() == 0 {
+		if srcInfo, err := os.Stat(src); err == nil && srcInfo.Size() > 0 {
+			_ = os.Remove(target)
+		}
+	}
+
 	var lastErr error
 	for attempt := 0; attempt < 5; attempt++ {
 		dest := ResolveUniquePath(destDir, filepath.Base(src))

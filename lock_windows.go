@@ -7,6 +7,8 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 	"syscall"
 	"time"
 )
@@ -62,6 +64,59 @@ func isLocked(path string) (bool, error) {
 	return false, fmt.Errorf("probe %s: %w", path, err)
 }
 
+// hasDownloadCompanion reports whether path appears to be associated with an in-progress
+// download (e.g. Firefox's .part, Chrome's .crdownload, Opera's .opdownload, IDM, etc.).
+func hasDownloadCompanion(path string) bool {
+	dir := filepath.Dir(path)
+	base := filepath.Base(path)
+	ext := filepath.Ext(base)
+	stem := strings.TrimSuffix(base, ext)
+
+	// 1. Direct companion check by appending/replacing temporary download suffixes.
+	suffixes := []string{
+		".part",
+		".crdownload",
+		".download",
+		".opdownload",
+		".tmp",
+		".temp",
+		".partial",
+		".filepart",
+		".aria2",
+	}
+	for _, s := range suffixes {
+		if pathExists(path + s) {
+			return true
+		}
+		if ext != "" && pathExists(filepath.Join(dir, stem+s)) {
+			return true
+		}
+	}
+
+	// 2. If the file is 0 bytes, check if ANY active download artifact exists in the same folder.
+	// Browsers occasionally use "Unconfirmed <hash>.crdownload" or random temp names.
+	// An empty 0-byte file must never be snatched while any download is actively in-flight.
+	info, err := os.Stat(path)
+	if err == nil && info.Size() == 0 {
+		entries, rerr := os.ReadDir(dir)
+		if rerr == nil {
+			for _, e := range entries {
+				if e.IsDir() {
+					continue
+				}
+				name := strings.ToLower(e.Name())
+				for _, s := range suffixes {
+					if strings.HasSuffix(name, s) {
+						return true
+					}
+				}
+			}
+		}
+	}
+
+	return false
+}
+
 // CheckFileReady performs one non-blocking readiness probe. It returns (true, nil)
 // when no other process holds the file and its size is stable across the probe,
 // (false, nil) when the file is still busy, and an error when it cannot be probed
@@ -71,6 +126,22 @@ func CheckFileReady(path string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
+
+	// 1. If an active download companion exists (e.g. Firefox's .part or Chrome's .crdownload),
+	// the file is definitely still being downloaded.
+	if hasDownloadCompanion(path) {
+		return false, nil
+	}
+
+	// 2. If the file is 0 bytes:
+	// Empty files during downloads (Firefox, Chrome placeholders) are not ready.
+	// Require a settling period (at least 2 seconds) so creation/writing has a chance to start.
+	if before.Size() == 0 {
+		if time.Since(before.ModTime()) < 2*time.Second {
+			return false, nil
+		}
+	}
+
 	locked, err := isLocked(path)
 	if err != nil || locked {
 		return false, err
