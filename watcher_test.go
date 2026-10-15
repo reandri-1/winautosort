@@ -203,7 +203,11 @@ func TestBackoffBounded(t *testing.T) {
 }
 
 func TestIsIgnoredName(t *testing.T) {
-	for _, n := range []string{"desktop.ini", "Thumbs.db", "~$x.docx"} {
+	for _, n := range []string{
+		"desktop.ini", "Thumbs.db", "~$x.docx",
+		".~lock.MATERI PB 13 UKHUWAH.pptx#",
+		".~lock.doc.odt#",
+	} {
 		if !isIgnoredName(n) {
 			t.Fatalf("%s should be ignored", n)
 		}

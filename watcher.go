@@ -260,9 +260,14 @@ func (w *Watcher) process(ctx context.Context, j job) (retry bool) {
 }
 
 // isIgnoredName skips housekeeping files that must never be sorted: Windows metadata
-// and Office's hidden "~$name.docx" owner-lock files (moving those corrupts open docs).
+// and Office's hidden lock files (moving those corrupts open docs).
 func isIgnoredName(name string) bool {
+	// Microsoft Office owner-lock files: ~$document.docx
 	if strings.HasPrefix(name, "~$") {
+		return true
+	}
+	// ONLYOFFICE, LibreOffice, OpenOffice lock files: .~lock.filename.ext#
+	if strings.HasPrefix(name, ".~lock.") || (strings.HasPrefix(name, ".~") && strings.HasSuffix(name, "#")) {
 		return true
 	}
 	switch strings.ToLower(name) {
